@@ -6,3 +6,5 @@ input/
 tmp/
 pdfs/*.pdf
 .env
+test/test_data.py
+.pytest_cache/
