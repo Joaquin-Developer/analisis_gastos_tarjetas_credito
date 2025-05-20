@@ -6,6 +6,7 @@ from typing import List, Dict, Tuple, Any
 
 from pdfminer.high_level import extract_text
 from google import genai
+from dotenv import load_dotenv
 
 from logger import logger
 
@@ -86,6 +87,8 @@ class TransactionsParserServicePOC:
 
 
 def main():
+    load_dotenv()
+
     file = "pdfs/santander_2025-04.pdf"
     ci_passw_pdf = os.getenv("CI_PASSW_PDF")
     google_ai_api_key = os.getenv("GOOGLE_AI_API_KEY")

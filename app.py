@@ -7,6 +7,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
+from dotenv import load_dotenv
 
 import utils
 from logger import logger
@@ -319,6 +320,7 @@ def process_pending_files():
 
 
 if __name__ == "__main__":
+    load_dotenv()
     process_pending_files()
     report_service = ReportService(currency="UY$", bank="SANTANDER")
     report_service.main()
