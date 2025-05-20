@@ -19,10 +19,6 @@ def extract_text_pdf(path: str, password: str = None):
         raise Exception(f"Ocurrió un error al leer el PDF con pdfminer.six: {error}")
 
 
-def test_get_pdf_data_with_ai(_: str) -> str:
-    return ""
-
-
 def get_pdf_data_with_ai(text: str) -> str:
     ## TODO pasar prompt a Ingles
     prompt = f"""
@@ -39,6 +35,7 @@ def get_pdf_data_with_ai(text: str) -> str:
         model="gemini-2.0-flash", contents=prompt
     )
     print(response.text)
+    return response.text
 
 
 def transform_transactions(transactions: List[Dict[str, Any]]):
@@ -75,11 +72,11 @@ def transform_transactions(transactions: List[Dict[str, Any]]):
     return data, total
 
 
-def text_pdf_to_transactions(pdf_text: str, is_test=False) -> List[Dict[str, Any]]:
+def text_pdf_to_transactions(pdf_text: str) -> List[Dict[str, Any]]:
     """
     Converts the IA response (str) to Python List.
     """
-    pdf_data = test_get_pdf_data_with_ai(pdf_text) if is_test else get_pdf_data_with_ai(pdf_text)
+    pdf_data = get_pdf_data_with_ai(pdf_text)
     pdf_data = pdf_data.replace("```json", "").replace("```", "")
     json_data = json.loads(pdf_data)
     return json_data
