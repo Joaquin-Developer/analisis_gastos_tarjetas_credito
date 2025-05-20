@@ -4,4 +4,5 @@ venv/
 data/
 input/
 tmp/
+pdfs/*.pdf
 .env
