@@ -1,5 +1,6 @@
 matplotlib==3.10.0
 scipy==1.15.3
-pdfminer.six==20250506
+# pdfminer.six==20250506
+PyPDF2==3.0.1
 google-genai==1.16.1
 python-dotenv==1.1.0
