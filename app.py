@@ -1,6 +1,7 @@
 import os
 import json
-from typing import List, Dict, Any
+from typing import List, Dict, Tuple, Any
+from abc import ABC, abstractmethod
 
 import matplotlib.pyplot as plt
 import smtplib
@@ -35,7 +36,26 @@ def get_json_files(last_n_elements: int = None) -> List[str]:
     return json_files
 
 
-class TransactionsParserService:
+class TransactionsParserService(ABC):
+    def __init__(self, bank_name: str, currency: str, month: str):
+        self.bank_name = bank_name
+        self.currency = currency
+        self.month = month
+
+    @abstractmethod
+    def get_transactions(self) -> Tuple[List[Dict[str, Any]], int]:
+        """
+        Returns a tuple of transactions (List) and total transactions (int)
+        """
+        ...
+
+
+class TransactionsAIParserService(TransactionsParserService):
+    ...
+
+
+
+class TransactionsManualParserService(TransactionsParserService):
     """
     Logic to parse the monthly bank PDF data into JSON format
     """
@@ -284,7 +304,7 @@ class ReportService:
         self.send_email(agg_categories_data)
 
 
-def process_pending_files():
+def process_pending_files(manual: bool = True):
     """
     FileName: input/{bank}_{month}_{currency}.txt
 
@@ -315,7 +335,10 @@ def process_pending_files():
         with open(f"{Folders.INPUT}/{file_path}", "r", encoding="utf-8") as file:
             data = file.read()
 
-        parser_service = TransactionsParserService(data, bank_name, currency, month)
+        if manual:
+            parser_service = TransactionsManualParserService(data, bank_name, currency, month)
+        else:
+            parser_service = TransactionsAIParserService(data, bank_name, currency, month)
         parser_service.main()
 
 
